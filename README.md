@@ -52,10 +52,6 @@ Welcome to “Build Predictive Machine Learning Models Using Streaming Data Pipe
 
 By the end of this workshop, you'll have a clear understanding of how to utilize Confluent Cloud’s features to build a foundation for machine learning applications, empowering you to transform your streaming data into valuable predictions and insights.
 
-<div align="center" padding=25px>
-    <img src="images/arc.png" width=75% height=75%>
-</div>
-
 ***
 
 
