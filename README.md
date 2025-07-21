@@ -354,7 +354,7 @@ The next step is to produce sample data using the Datagen Source connector. You 
     {
       "name": "credit_card_number",
       "type": {
-        "type": "int",
+        "type": "long",
         "arg.properties": {
           "options": [
              4774993836989662,
@@ -428,91 +428,6 @@ The next step is to produce sample data using the Datagen Source connector. You 
 
 * You should now be able to see the messages within the UI. You can view the specific messages by clicking the icon.
 ***
-
-## <a name="step-7"></a>Configure the clients.
-The next step is to run the producer to produce transaction records to the **transactions** topic.
-
-1. Open VS Code or any editor of your choice and open the github repository folder and run the following command
-```bash
-cd series-getting-started-with-cc/workshop-predictive-ai
-```
-3. Create a virtual environment for this project and activate it by running the following command
-```bash
-python3 -m venv _venv
-source _venv/bin/activate
-```
-4. Install the dependencies by running the following commmand.
-```bash
-pip3 install -r requirements.txt
-```
-5. Create a ```client.properties``` and ```schema.properties``` files in the current folder. Let these be empty now we'll paste the configurations in the next step.
-
-## <a name="step-8"></a>Create a Python Client for transactions topic
-The next step is to produce sample data using a client. You will configure a python client for **transactions** topic.
-
-1. From the Confluent Cloud UI, click on the **Clients** tab on the navigation menu. Click on the **Add new client** button on the top right.
-<div align="center" padding=25px>
-    <img src="images/producer-1.png" width=75% height=75%>
-</div>
-
-2. Choose **Python** in choose your language option.
-<div align="center" padding=25px>
-    <img src="images/producer-2.png" width=75% height=75%>
-</div>
-
-3. Click on  **Use existing API Key** in select an API key and fill out the downloaded API keys.
-<div align="center" padding=25px>
-    <img src="images/producer-3.png" width=75% height=75%>
-</div>
-
-4. Click on  **Use existing topic** in type **transactions**.
-5. Copy the configuration snippet shown in the screen and paste in ```client.properties``` file.
-```bash
-# Required connection configs for Kafka producer, consumer, and admin
-bootstrap.servers=pkc-p11xm.us-east-1.aws.confluent.cloud:9092
-security.protocol=SASL_SSL
-sasl.mechanisms=PLAIN
-sasl.username=xxxxxxxxxxxx
-sasl.password=xxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-# Best practice for higher availability in librdkafka clients prior to 1.7
-session.timeout.ms=45000
-
-client.id=ccloud-python-client-3b98b537-adba-4c2d-b36f-79f964f031c0
-
-```
-
-6. Scroll down and click on **View Clients** button. However you can't see any clients yet as there are no applications currently talking to topics yet.
-7. Click on **Environments** in the top left of the screen and choose your environment.
-8. Scroll down at the right hand side of the screen, you'll see the stream governance details like below
-<div align="center" padding=25px>
-    <img src="images/client-1.png" width=75% height=75%>
-</div>
-
-9. Copy the endpoint of Stream Governance API and create a new credentials to access this by clicking on **Add Key**.
-10. Paste the endpoint and API Keys in ```schema.properties``` file like below:
-```bash
-schema.registry.url=https://psrc-em25q.us-east-2.aws.confluent.cloud
-schema.registry.username=xxxxxxxxxx
-schema.registry.password=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-```
-12. Run the admin client to create required topics.
-```bash
-python3 admin_client.py
-```
-You should be able to view the output something like this..
-```bash
-Topic transactions created
-Topic fraudulent_transactions created
-```
-11. Run the ```producer.py``` file by running the following command.
-```bash
-python3 producer.py
-```
-You can see records being published to transactions topic.
-> **Note:** If the producer fails, there are a few different ways to troubleshoot the error:
-> * Click on the *Cluster Overiview*, go to *Cluster Settings*,. Double check there are no extra spaces at the beginning or end of the key and secret that you may have accidentally copied and pasted in ```client.properties``` file also verify the ```bootstrap.servers``` value by comparing it with the *Bootstrap Server* value in the Endpoints section in UI. Also verify the ```schema.properties```
-
 
 ## <a name="step-10"></a>Perform complex joins using Flink to combine the records into one topic
 Kafka topics and schemas are always in sync with our Flink cluster. Any topic created in Kafka is visible directly as a table in Flink, and any table created in Flink is visible as a topic in Kafka. Effectively, Flink provides a SQL interface on top of Confluent Cloud.
