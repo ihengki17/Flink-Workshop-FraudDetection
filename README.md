@@ -457,9 +457,7 @@ CREATE TABLE feature_set (
     window_start TIMESTAMP(3),
     window_end TIMESTAMP(3)
 ) WITH (
-  'changelog.mode' = 'upsert',
-  'value.format' = 'json-registry',
-  'key.format' = 'json-registry'
+  'changelog.mode' = 'upsert'
 )
 ```
 ```sql
