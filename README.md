@@ -184,6 +184,8 @@ An environment contains clusters and its deployed components such as Apache Flin
 
 5. Repeat the previous step and create a second topic name **credit_cards** and **3** as the number of partitions and skip the data contract.
 
+6. Repeat the previous step and create a third topic name **transactions** and **3** as the number of partitions and skip the data contract.
+
 > **Note:** Topics have many configurable parameters. A complete list of those configurations for Confluent Cloud can be found [here](https://docs.confluent.io/cloud/current/using/broker-config.html). If you are interested in viewing the default configurations, you can view them in the Topic Summary on the right side. 
 
 7. After topic creation, the **Topics UI** allows you to monitor production and consumption throughput metrics and the configuration parameters for your topics. When you begin sending messages to Confluent Cloud, you will be able to view those messages and message schemas.
@@ -214,7 +216,7 @@ The next step is to produce sample data using the Datagen Source connector. You 
     <img src="images/connectors-3.png" width=75% height=75%>
 </div>
 
-5. Choose **JSON_SR** for select output record value format.
+5. Choose **AVRO** for select output record value format.
 <div align="center" padding=25px>
     <img src="images/connectors-4.png" width=75% height=75%>
 </div>
@@ -330,13 +332,97 @@ The next step is to produce sample data using the Datagen Source connector. You 
     <img src="images/connectors-7.png" width=75% height=75%>
 </div>
 
+10. Repeat again the same steps to create a connector for **transactions** topic by using the below schema but use existing API key this time.
+```
+{
+  "type": "record",
+  "name": "TransactionRecord",
+  "namespace": "workshop_5",
+  "fields": [
+    {
+      "name": "amount",
+      "type": {
+        "type": "int",
+        "arg.properties": {
+          "range": {
+            "min": 500,
+            "max": 2000
+          }
+        }
+      }
+    },
+    {
+      "name": "credit_card_number",
+      "type": {
+        "type": "int",
+        "arg.properties": {
+          "options": [
+             4774993836989662,
+             4738273984732749,
+             4739023369472686,
+             4742020908432434,
+             4743519677912308,
+             4757008603231174,
+             4751762910051615,
+             4754760449011363,
+             4760755526930859
+          ]
+        }
+      }
+    },
+    {
+      "name": "location",
+      "type": {
+        "type": "string",
+        "arg.properties": {
+          "options": [
+             "Tokyo",
+             "Rio",
+             "Berlin",
+             "Oslo",
+             "Stockholm",
+             "Nairobi",
+             "Spain",
+             "Portugal"
+          ]
+        }
+      }
+    },
+    {
+      "name": "transaction_id",
+      "type": {
+        "type": "int",
+        "arg.properties": {
+          "range": {
+            "min": 1000000,
+            "max": 9999999
+          }
+        }
+      }
+    },
+    {
+      "name": "event_timestamp",
+      "type": {
+        "type": "long",
+        "arg.properties": {
+          "iteration": {
+            "start": 1753200000000,
+            "step": 1000
+          }
+        }
+      }
+    }
+  ]
+}
+```
+
 > **Note:** If the connectors fails, there are a few different ways to troubleshoot the error:
 > * Click on the *Connector Name*. You will see a play and pause button on this page. Click on the play button.
 > * Click on the *Connector Name*, go to *Settings*, and re-enter your API key and secret. Double check there are no extra spaces at the beginning or end of the key and secret that you may have accidentally copied and pasted.
 > * If neither of these steps work, try creating another Datagen connector.
 
 
-11. You can view the sample data flowing into topics in real time. Navigate to  the **Topics** tab and then click on the **customers** and **credit_cards**. You can view the production and consumption throughput metrics here.
+11. You can view the sample data flowing into topics in real time. Navigate to  the **Topics** tab and then click on the **customers**, **credit_cards**, and **transactions**. You can view the production and consumption throughput metrics here.
 
 12. Click on **Messages**.
 
