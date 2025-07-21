@@ -441,7 +441,7 @@ SELECT
     cust.customer_email,
     t.amount,
     cust.average_spending_amount,
-    TO_TIMESTAMP(t.transaction_timestamp) AS transaction_timestamp
+    TO_TIMESTAMP_LTZ(t.event_timestamp,3) AS transaction_timestamp
 FROM transactions t
 INNER JOIN credit_cards cc ON t.credit_card_number = cc.credit_card_number
 INNER JOIN customers cust ON cc.customer_id = cust.customer_id
