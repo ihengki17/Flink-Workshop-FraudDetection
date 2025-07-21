@@ -199,7 +199,7 @@ The next step is to produce sample data using the Datagen Source connector. You 
 
 5. Choose **AVRO** for select output record value format.
 <div align="center" padding=25px>
-    <img src="images/connectors-4.png" width=75% height=75%>
+    <img src="images/connectors-avro-4.png" width=75% height=75%>
 </div>
 
 6. Click on **Provide Your Own Schema** and paste the following contents
