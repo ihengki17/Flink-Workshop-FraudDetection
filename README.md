@@ -2,7 +2,7 @@
     <img src="images/confluent.png" width=50% height=50%>
 </div>
 
-# <div align="center">Build Fraud Detection with Confluent Cloud and Flink</div>
+# <div align="center">Build Fraud Detection with Flink</div>
 ## <div align="center">Lab Guide</div>
 <br>
 
@@ -23,7 +23,7 @@
 
 1. Create a Confluent Cloud Account.
     - Sign up for a Confluent Cloud account [here](https://www.confluent.io/confluent-cloud/tryfree/).
-    - Once you have signed up and logged in, click on the menu icon at the upper right hand corner, click on “Billing & payment”, then enter payment details under “Payment details & contacts”. A screenshot of the billing UI is included below.
+    - Once you need to enter the credit card to pass the payment wall, please enter this Promo Code **POPTOUT00078KL9**.
 
 2. Clone this repo:
    ```
@@ -38,17 +38,13 @@
 
 > **Note:** You will create resources during this workshop that will incur costs. When you sign up for a Confluent Cloud account, you will get free credits to use in Confluent Cloud. This will cover the cost of resources created during the workshop. More details on the specifics can be found [here](https://www.confluent.io/confluent-cloud/tryfree/).
 
-<div align="center" padding=25px>
-    <img src="images/billing.png" width=75% height=75%>
-</div>
-
 ***
 
 ## **Objective**
 
 <br>
 
-Welcome to “Build Predictive Machine Learning Models Using Streaming Data Pipelines”! In this workshop, you will discover how to leverage the capabilities of Confluent Cloud to enable the development of predictive machine learning models using streaming data. We will focus on showcasing how Confluent Cloud, along with Apache Flink and Kafka, can facilitate the creation and deployment of effective data pipelines for real-time analytics.
+Welcome to “Build Fraud Detection with Flink”! In this workshop, you will discover how to leverage the capabilities of Flink to enable the development of predictive machine learning models using streaming data. We will focus on showcasing how Confluent Cloud, along with Apache Flink and Kafka, can facilitate the creation and deployment of effective data pipelines for real-time analytics.
 
 By the end of this workshop, you'll have a clear understanding of how to utilize Confluent Cloud’s features to build a foundation for machine learning applications, empowering you to transform your streaming data into valuable predictions and insights.
 
