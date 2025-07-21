@@ -12,15 +12,10 @@
 3. [Create Flink Compute Pool](#step-3)
 4. [Create Topics and walk through Confluent Cloud Dashboard](#step-4)
 5. [Create Datagen Connectors for Customers and Credit Cards](#step-5)
-6. [Create a Producer for transactions topic](#step-6)
-7. [Clone the repository and configure the clients](#step-7)
-8. [Add data contract to transactions topic](#step-8)
-9. [Perform complex joins using Flink to combine the records into one topic](#step-9)
-10. [Consume feature set topic and predict fraud transactions](#step-10)
-11. [Connect Flink with Bedrock Model](#step-11)
-12. [Flink Monitoring](#step-12)
-13. [Clean Up Resources](#step-13)
-14. [Confluent Resources and Further Testing](#step-14)
+6. [Perform complex joins using Flink to combine the records into one topic](#step-6)
+7. [Flink Monitoring](#step-7)
+8. [Clean Up Resources](#step-8)
+9. [Confluent Resources and Further Testing](#step-9)
 ***
 
 ## **Prerequisites**
@@ -30,21 +25,7 @@
     - Sign up for a Confluent Cloud account [here](https://www.confluent.io/confluent-cloud/tryfree/).
     - Once you have signed up and logged in, click on the menu icon at the upper right hand corner, click on “Billing & payment”, then enter payment details under “Payment details & contacts”. A screenshot of the billing UI is included below.
 
-2. Install Python 3.8+
-   > If you are using a Linux distribution, chances are you already have Python 3 pre-installed. To see which version of Python 3 you have installed, open a command prompt and run
-   ```
-    python3 --version
-   ```
-
-   If you need to install python3, [this may help](https://docs.python-guide.org/starting/install3/linux/)
-
-3. Install python virtual environment: ```python3 -m pip install venv``` or ```python3 -m pip install virtualenv```
-   > If ```/usr/bin/python3: No module named pip``` error shows up, install python3-pip using
-   > ```
-   > sudo apt-get install -y python3-pip
-   > ```
-
-4. Clone this repo:
+2. Clone this repo:
    ```
    git clone git@github.com:confluentinc/commercial-workshops.git
    ```
@@ -53,7 +34,7 @@
    git clone https://github.com/confluentinc/commercial-workshops.git
    ```
 
-5. Install confluent cloud CLI based on your OS (https://docs.confluent.io/confluent-cli/current/install.html)
+3. Install confluent cloud CLI based on your OS (https://docs.confluent.io/confluent-cli/current/install.html)
 
 > **Note:** You will create resources during this workshop that will incur costs. When you sign up for a Confluent Cloud account, you will get free credits to use in Confluent Cloud. This will cover the cost of resources created during the workshop. More details on the specifics can be found [here](https://www.confluent.io/confluent-cloud/tryfree/).
 
@@ -125,7 +106,7 @@ An environment contains clusters and its deployed components such as Apache Flin
 
 ***
 
-## <a name="step-4"></a>Create a Flink Compute Pool
+## <a name="step-3"></a>Create a Flink Compute Pool
 
 1. On the navigation menu, select **Flink** and click **Create Compute Pool**.
 
@@ -168,7 +149,7 @@ An environment contains clusters and its deployed components such as Apache Flin
 
 ***
 
-## <a name="step-5"></a>Creates Topic and Walk Through Cloud Dashboard
+## <a name="step-4"></a>Creates Topic and Walk Through Cloud Dashboard
 
 1. On the navigation menu, you will see **Cluster Overview**. 
 
@@ -192,7 +173,7 @@ An environment contains clusters and its deployed components such as Apache Flin
 
 ***
 
-## <a name="step-6"></a>Create Datagen Connectors for Customers and Credit Cards
+## <a name="step-5"></a>Create Datagen Connectors for Customers and Credit Cards
 The next step is to produce sample data using the Datagen Source connector. You will create two Datagen Source connectors. One connector will send sample customer data to **customers** topic, the other connector will send sample credit card data to **credit_cards** topic.
 
 1. First, you will create the connector that will send data to **customers**. From the Confluent Cloud UI, click on the **Connectors** tab on the navigation menu. Click on the **Datagen Source** icon.
@@ -429,7 +410,7 @@ The next step is to produce sample data using the Datagen Source connector. You 
 * You should now be able to see the messages within the UI. You can view the specific messages by clicking the icon.
 ***
 
-## <a name="step-10"></a>Perform complex joins using Flink to combine the records into one topic
+## <a name="step-6"></a>Perform complex joins using Flink to combine the records into one topic
 Kafka topics and schemas are always in sync with our Flink cluster. Any topic created in Kafka is visible directly as a table in Flink, and any table created in Flink is visible as a topic in Kafka. Effectively, Flink provides a SQL interface on top of Confluent Cloud.
 
 1. From the Confluent Cloud UI, click on the **Environments** tab on the navigation menu. Choose your environment.
@@ -525,108 +506,7 @@ b. [Hop Windows](https://docs.confluent.io/cloud/current/flink/reference/queries
 c. [Cumulate Windows](https://docs.confluent.io/cloud/current/flink/reference/queries/window-tvf.html#flink-sql-window-tvfs-cumulate)
 <br> 
 
-## <a name="step-11"></a>Consume feature set topic and predict fraud transactions
-The next step is to create a consumer for feature set topic and predict the fraudulent transaction.
-
-1. Update ```client.properties``` file with an additional configuration at the end of the file like following.
-```bash
-auto.offset.reset=earliest
-enable.auto.commit=false
-group.id=FraudDetectorApplication
-```
-
-2. Run the ```fraud_detector.py``` to determine the fraudulent transactions from the feature set and produce the transactions to the topic created above.
-```python
-python3 fraud_detector.py
-```
-
-3. Now you can see few messages in the *fraudulent_transactions* topic. When you see ```Polling for messages...``` continously you can stop the consumer by clicking ```Ctrl+c```
-
-> **Note:** This demonstration simulates a sample condition as a machine learning model to showcase the capabilities of real-time streaming with Confluent Cloud.
-In this setup, a data engineer can extract the required features from various sources into separate topics. These topics enable data scientists to leverage the curated feature sets to develop and train machine learning models outside of the Confluent Cloud environment.
-This illustrates the power of integrating Confluent Cloud for efficient data streaming and feature engineering in the ML workflow.
-
-4. We shall see some fraudulent transactions under ***fraudulent_transactions*** topic by running the following command in flink
-```sql
-SELECT details FROM fraudulent_transactions
-```
-<div align="center" padding=25px>
-    <img src="images/fraud_transactions.png" width=75% height=75%>
-</div>
-
-## <a name="step-12"></a>Connect Flink with Bedrock Model
-The next step is to create a integrated model from AWS Bedrock with Flink on Confluent Cloud.
-
-1. First, you will create the model connection using Confluent CLI. If you've never installed one, you could install it based on your OS (https://docs.confluent.io/confluent-cli/current/install.html) and login to confluent.
-```bash
-confluent login
-```
-
-2. Make sure you prepare your AWS API Key and Secret to create connection to the Bedrock. (Would be provided in the workshop)
-
-3. Make sure you are using the right environment and right cluster to create the connection. Verify by performing the following.
-```bash
-confluent environment list
-confluent environment use <env-id>
-confluent kafka cluster list
-confluent kafka cluster use <cluster-id>
-```
-
-> **Note:** If you doesn't have any user you could check the step below to create user with full access to Bedrock and creating API key and secret. You could skip this step if you already have user and api key with full access to bedrock.
-
->Go to **AWS IAM>User** and create User
-<div align="center">
-    <img src="images/bedrock0-1.png" width=100% height=100%>
-</div>
-
->Create User with attach policies for Bedrock Full Access
-<div align="center">
-    <img src="images/bedrock0-2.png" width=100% height=100%>
-</div>
-
-<div align="center">
-    <img src="images/bedrock0-3.png" width=100% height=100%>
-</div>
-
->Create API Key by search your user that has been created and click on the "Create Access Key"
-<div align="center">
-    <img src="images/bedrock0-4.png" width=100% height=100%>
-</div>
-
-<div align="center">
-    <img src="images/bedrock-1.png" width=100% height=100%>
-</div>
-
-<div align="center">
-    <img src="images/bedrock-2.png" width=100% height=100%>
-</div>
-
-```bash
-confluent flink connection create my-connection --cloud aws --region us-east-1 --type bedrock --endpoint https://bedrock-runtime.us-east-1.amazonaws.com/model/meta.llama3-8b-instruct-v1:0/invoke --aws-access-key <API Key> --aws-secret-key <API Secret>
-```
-3. After creating connection, we need to create the model in Flink before we could invoke on our query.
-```sql
-CREATE MODEL NotificationEngine
-INPUT (details STRING)
-OUTPUT (message STRING)
-WITH (
-  'task' = 'text_generation',
-  'provider' = 'bedrock',
-  'bedrock.connection' = 'my-connection'
-);
-```
-
-5. Now let's invoke the model and get the results.
-
-```sql
-SELECT message FROM fraudulent_transactions, LATERAL TABLE(ML_PREDICT('NotificationEngine', details));
-```
-<div align="center" padding=25px>
-    <img src="images/ai_messages.png" width=75% height=75%>
-</div>
-***
-
-## <a name="step-13"></a>Flink Monitoring
+## <a name="step-7"></a>Flink Monitoring
 1. Status of all the Flink Jobs is available under **Flink Statements** Tab.
    
 <div align="center">
@@ -643,7 +523,7 @@ SELECT message FROM fraudulent_transactions, LATERAL TABLE(ML_PREDICT('Notificat
 
 ***
 
-## <a name="step-14"></a>Clean Up Resources
+## <a name="step-8"></a>Clean Up Resources
 
 Deleting the resources you created during this workshop will prevent you from incurring additional charges. 
 
@@ -668,7 +548,7 @@ Deleting the resources you created during this workshop will prevent you from in
 </div>
 *** 
 
-## <a name="step-15"></a>Confluent Resources and Further Testing
+## <a name="step-9"></a>Confluent Resources and Further Testing
 
 Here are some links to check out if you are interested in further testing:
 - [Confluent Cloud Documentation](https://docs.confluent.io/cloud/current/overview.html)
